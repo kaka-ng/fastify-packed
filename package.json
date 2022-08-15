@@ -60,7 +60,7 @@
     "@fastify/jwt": "^6.0.0",
     "@fastify/mongodb": "^6.0.0",
     "@fastify/swagger": "^7.0.0",
-    "@fastify/under-pressure": "^7.0.0"
+    "@fastify/under-pressure": "^8.0.0"
   },
   "dependencies": {
     "fastify-plugin": "^4.0.0"
