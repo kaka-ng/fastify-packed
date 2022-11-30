@@ -2,7 +2,6 @@ import type { default as FastifyCORS, FastifyCorsOptions } from '@fastify/cors'
 import type { default as FastifyHelmet } from '@fastify/helmet'
 import type { default as FastifyJWT } from '@fastify/jwt'
 import type { default as FastifyMongoDB } from '@fastify/mongodb'
-import type { default as FastifSwagger } from '@fastify/swagger'
 import type { default as UnderPressure } from '@fastify/under-pressure'
 import * as crypto from 'crypto'
 import type { default as EnvSchema, EnvSchemaData, EnvSchemaOpt } from 'env-schema'
@@ -43,10 +42,8 @@ export interface FastifyPackedOption {
   cors?: boolean | FastifyRegisterOptions<FastifyCorsOptions>
   helmet?: boolean | FastifyRegisterOptions<ExtractGeneric<typeof FastifyHelmet>>
   underPressure?: boolean | FastifyRegisterOptions<ExtractGeneric<typeof UnderPressure>>
-
   jwt?: boolean | FastifyRegisterOptions<ExtractGeneric<typeof FastifyJWT>>
   mongodb?: boolean | FastifyRegisterOptions<ExtractGeneric<typeof FastifyMongoDB>>
-  swagger?: boolean | FastifyRegisterOptions<ExtractGeneric<typeof FastifSwagger>>
 }
 
 export function version (): string {
@@ -81,11 +78,7 @@ export function createPackedPlugin (envOptions?: true | EnvSchemaOpt): CreatedPa
   }
 
   return {
-    plugin: FastifyPlugin(createPacked(), {
-      fastify: '4.x',
-      name: 'fastify-packed',
-      dependencies: []
-    }),
+    plugin: FastifyPacked,
     version,
     env
   }
@@ -111,14 +104,6 @@ const createPacked = function (): FastifyPluginAsync<FastifyPackedOption> {
       if (fastifyCORS === false) throw Error('please install @fastify/cors with the following command:\nnpm install @fastify/cors\nyarn add @fastify/cors')
       const opt = parseOption(options.cors, { origin: true })
       await fastify.register(fastifyCORS, opt)
-    }
-
-    // swagger should place before helmet
-    if (checkEnable(options.swagger)) {
-      const fastifySwagger = requireOptionalDependency<typeof FastifSwagger>('@fastify/swagger')
-      if (fastifySwagger === false) throw Error('please install @fastify/swagger with the following command:\nnpm install @fastify/swagger\nyarn add @fastify/swagger')
-      const opt = parseOption(options.swagger, { })
-      await fastify.register(fastifySwagger, opt)
     }
 
     // security package
