@@ -58,7 +58,7 @@
     "@fastify/cors": "^8.0.0",
     "@fastify/helmet": "^11.0.0",
     "@fastify/jwt": "^7.0.0",
-    "@fastify/mongodb": "^7.0.0",
+    "@fastify/mongodb": "^8.0.0",
     "@fastify/under-pressure": "^8.0.0"
   },
   "dependencies": {
